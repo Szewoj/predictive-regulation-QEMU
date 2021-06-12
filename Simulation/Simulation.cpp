@@ -6,10 +6,18 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
+#include "SimObject.h"
 
 int main(int, char **) {
 
   //--- INITIALIZE SHARED MEMORY
+    //TODO
+  //---
+
+  //--- INITIALIZE SIMULATION OBJECT
+  double y, u, z;
+  SimObject simulation;
+  //---
 
   //--- INITIALIZE VIDEOCAPTURE
   cv::Mat frame;
@@ -71,6 +79,12 @@ int main(int, char **) {
     // wait for timerfd expiration
     sizeRead = read(timerFD, &numExp, sizeof(uint64_t));
     if (numExp > 0) {
+      // reset timer expiration variable
+      numExp = 0; 
+
+      // copy u from buffer (atomic variable) <- TODO
+      u = 25.0;
+
       // calculate center pixel
       int centerRow = frame.rows / 2;
       int centerCol = frame.cols / 2;
@@ -78,9 +92,19 @@ int main(int, char **) {
       // get center pixel and calculate luminance
       cv::Vec3b pixel = frame.at<cv::Vec3b>(centerRow, centerCol);
       int luminance = 0.299 * pixel[2] + 0.587 * pixel[1] + 0.114 * pixel[0];
+      //std::cout << "Luminance " << luminance << '\n';
 
-      std::cout << "Luminance " << luminance << '\n';
-      numExp = 0;
+      // calculate disturbance signal
+      z = luminance * 100.0 / 255.0;
+
+      // calculate y
+      y = simulation.CalculateY(u, z);
+
+      std::cout << "y = " << y << '\n';
+
+      // save variables to shm
+      // TODO
+      
     }
 
     if (cv::waitKey(5) == 27)
