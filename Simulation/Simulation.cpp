@@ -14,7 +14,7 @@ int main(int, char **) {
     //TODO
   //---
 
-  //--- INITIALIZE SIMULATION OBJECT
+  //--- INITIALIZE SIMULATION VARIABLES
   double y, u, z;
   SimObject simulation;
   //---
