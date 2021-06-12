@@ -111,44 +111,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named simulation
+# Target rules for targets named Simulation
 
 # Build rule for target.
-simulation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 simulation
-.PHONY : simulation
+Simulation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Simulation
+.PHONY : Simulation
 
 # fast build rule for target.
-simulation/fast:
-	$(MAKE) -f CMakeFiles/simulation.dir/build.make CMakeFiles/simulation.dir/build
-.PHONY : simulation/fast
+Simulation/fast:
+	$(MAKE) -f CMakeFiles/Simulation.dir/build.make CMakeFiles/Simulation.dir/build
+.PHONY : Simulation/fast
 
-simulation.o: simulation.cpp.o
+Simulation.o: Simulation.cpp.o
 
-.PHONY : simulation.o
+.PHONY : Simulation.o
 
 # target to build an object file
-simulation.cpp.o:
-	$(MAKE) -f CMakeFiles/simulation.dir/build.make CMakeFiles/simulation.dir/simulation.cpp.o
-.PHONY : simulation.cpp.o
+Simulation.cpp.o:
+	$(MAKE) -f CMakeFiles/Simulation.dir/build.make CMakeFiles/Simulation.dir/Simulation.cpp.o
+.PHONY : Simulation.cpp.o
 
-simulation.i: simulation.cpp.i
+Simulation.i: Simulation.cpp.i
 
-.PHONY : simulation.i
+.PHONY : Simulation.i
 
 # target to preprocess a source file
-simulation.cpp.i:
-	$(MAKE) -f CMakeFiles/simulation.dir/build.make CMakeFiles/simulation.dir/simulation.cpp.i
-.PHONY : simulation.cpp.i
+Simulation.cpp.i:
+	$(MAKE) -f CMakeFiles/Simulation.dir/build.make CMakeFiles/Simulation.dir/Simulation.cpp.i
+.PHONY : Simulation.cpp.i
 
-simulation.s: simulation.cpp.s
+Simulation.s: Simulation.cpp.s
 
-.PHONY : simulation.s
+.PHONY : Simulation.s
 
 # target to generate assembly for a file
-simulation.cpp.s:
-	$(MAKE) -f CMakeFiles/simulation.dir/build.make CMakeFiles/simulation.dir/simulation.cpp.s
-.PHONY : simulation.cpp.s
+Simulation.cpp.s:
+	$(MAKE) -f CMakeFiles/Simulation.dir/build.make CMakeFiles/Simulation.dir/Simulation.cpp.s
+.PHONY : Simulation.cpp.s
 
 # Help Target
 help:
@@ -157,11 +157,11 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... simulation"
+	@echo "... Simulation"
 	@echo "... edit_cache"
-	@echo "... simulation.o"
-	@echo "... simulation.i"
-	@echo "... simulation.s"
+	@echo "... Simulation.o"
+	@echo "... Simulation.i"
+	@echo "... Simulation.s"
 .PHONY : help
 
 
