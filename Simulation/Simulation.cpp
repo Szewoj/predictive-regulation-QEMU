@@ -4,14 +4,21 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/videoio.hpp>
 #include <sys/timerfd.h>
+#include <thread>
 #include <unistd.h>
 
+#include "InPort.h"
 #include "SimObject.h"
 
 int main(int, char **) {
 
   //--- INITIALIZE SHARED MEMORY
-    //TODO
+  // TODO
+  //---
+
+  //--- INITIALIZE COMUNICATION THREAD
+  std::shared_ptr<InPort> tcpPort = std::make_shared<InPort>();
+  std::thread commThread(InPort::threadCall, tcpPort);
   //---
 
   //--- INITIALIZE SIMULATION VARIABLES
@@ -20,8 +27,16 @@ int main(int, char **) {
   //---
 
   //--- INITIALIZE VIDEOCAPTURE
+  std::cout << "OpenCV Version used: " << CV_MAJOR_VERSION << "."
+            << CV_MINOR_VERSION << std::endl;
   cv::Mat frame;
+  cv::Vec3b pixel, redPix;
   cv::VideoCapture cap;
+
+  redPix[0] = 0;
+  redPix[1] = 0;
+  redPix[2] = 255;
+
   // open the default camera using default API
   // cap.open(0);
   // OR advance usage: select any API backend
@@ -73,6 +88,17 @@ int main(int, char **) {
       std::cerr << "ERROR! blank frame grabbed\n";
       exit(EXIT_FAILURE);
     }
+    // calculate center pixel
+    int centerRow = frame.rows / 2;
+    int centerCol = frame.cols / 2;
+
+    // paint crosshair for reference
+    for (int i = 2; i < 10; ++i) {
+      frame.at<cv::Vec3b>(centerRow + i, centerCol) = redPix;
+      frame.at<cv::Vec3b>(centerRow, centerCol + i) = redPix;
+      frame.at<cv::Vec3b>(centerRow - i, centerCol) = redPix;
+      frame.at<cv::Vec3b>(centerRow, centerCol - i) = redPix;
+    }
 
     cv::imshow("Live", frame);
 
@@ -80,19 +106,14 @@ int main(int, char **) {
     sizeRead = read(timerFD, &numExp, sizeof(uint64_t));
     if (numExp > 0) {
       // reset timer expiration variable
-      numExp = 0; 
+      numExp = 0;
 
-      // copy u from buffer (atomic variable) <- TODO
-      u = 25.0;
-
-      // calculate center pixel
-      int centerRow = frame.rows / 2;
-      int centerCol = frame.cols / 2;
+      // copy u from buffer (atomic variable)
+      u = tcpPort->u_;
 
       // get center pixel and calculate luminance
-      cv::Vec3b pixel = frame.at<cv::Vec3b>(centerRow, centerCol);
+      pixel = frame.at<cv::Vec3b>(centerRow, centerCol);
       int luminance = 0.299 * pixel[2] + 0.587 * pixel[1] + 0.114 * pixel[0];
-      //std::cout << "Luminance " << luminance << '\n';
 
       // calculate disturbance signal
       z = luminance * 100.0 / 255.0;
@@ -102,9 +123,12 @@ int main(int, char **) {
 
       std::cout << "y = " << y << '\n';
 
+      // save variables to port memory
+      tcpPort->z_ = z;
+      tcpPort->y_ = y;
+
       // save variables to shm
       // TODO
-      
     }
 
     if (cv::waitKey(5) == 27)
