@@ -25,7 +25,6 @@ signals:
     void valueWyjscieChanged(double new_val, double val_zad);
     void valueSterowanieChanged(double new_val);
     void valueZaklucenieChanged(double new_val);
-    //void valueWyjscieZadaneChanged(double new_val);
 
 private:
     double wyjscieZadane;

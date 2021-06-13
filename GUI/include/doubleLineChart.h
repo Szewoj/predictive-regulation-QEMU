@@ -1,7 +1,6 @@
 #ifndef DOUBLELINECHART_H
 #define DOUBLELINECHART_H
 
-#include "include/basicChart.h"
 #include <QtCharts/QChart>
 #include <QtCore/QTimer>
 
@@ -20,11 +19,9 @@ public:
     virtual ~doubleLineChart();
 
 public slots:
-    //void handleTimeout();
     void appendSeries(double y, double y_zad);
 
 private:
-    //QTimer m_timer;
     QLineSeries *m_series;
     QLineSeries *m2_series;
     QStringList m_titles;

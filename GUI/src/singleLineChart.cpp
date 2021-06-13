@@ -39,7 +39,9 @@ singleLineChart::singleLineChart(QGraphicsItem *parent, Qt::WindowFlags wFlags):
 }
 
 singleLineChart::~singleLineChart(){
-
+    delete m_axisX;
+    delete m_axisY;
+    delete m_series;
 }
 
 void singleLineChart::appendSeries(double y)

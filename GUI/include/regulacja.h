@@ -26,6 +26,7 @@ public:
     ~Regulacja();
     QWidget *centralWidget;
     QGridLayout *mainGridLayout;
+
     void closeEvent (QCloseEvent *event);
 };
 #endif // REGULACJA_H

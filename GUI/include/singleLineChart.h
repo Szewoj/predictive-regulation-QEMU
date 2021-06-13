@@ -1,7 +1,6 @@
 #ifndef SINGLELINECHART_H
 #define SINGLELINECHART_H
 
-#include "include/basicChart.h"
 #include <QtCharts/QChart>
 #include <QtCore/QTimer>
 #include "include/regulation.h"

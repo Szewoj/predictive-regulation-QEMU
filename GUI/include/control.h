@@ -1,3 +1,6 @@
+#ifndef CONTROL_H
+#define CONTROL_H
+
 #include "include/regulacja.h"
 #include "include/singleLineChart.h"
 #include "include/doubleLineChart.h"
@@ -31,13 +34,15 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "include/control.h"
-#include "include/controlPanel.h"
 
-
-int main(int argc, char *argv[])
+class control
 {
-    QApplication app(argc, argv);
-    controlPanel pc;
-    return app.exec();
-}
+
+
+public:
+    control();
+    ~control();
+    tcpSocket *t;
+
+};
+#endif // CONTROL_H

@@ -41,17 +41,8 @@ Regulation::Regulation():
     memcpy(&shm->U,byte3, sizeof(double));
 
     pthread_rwlock_unlock(&shm->rw);
-/*
-    double fl = 12.6;
-    char *byte = (char*)&fl;
-    double tr = 16;
 
-    memcpy(&shm->U,byte, sizeof(double));
-    memcpy(&tr, &shm->U, sizeof(double));
-    qDebug()<<"Po"<<tr;*/
-    //write(STDOUT_FILENO, &shm->Z, sizeof(double));
-    //write(STDOUT_FILENO, "\n", 1);
-
+    wyjscieZadane = 4;
 }
 
 Regulation::~Regulation(){
@@ -69,7 +60,7 @@ void Regulation::read()
         memcpy(&sterowanie,&shm->U, sizeof(double));
         pthread_rwlock_unlock(&shm->rw);
     }
-    wyjscieZadane = 4; //Test!
+    //wyjscieZadane = 4; //Test!
     emit valueWyjscieChanged(wyjscie, wyjscieZadane);
     emit valueSterowanieChanged(sterowanie);
     emit valueZaklucenieChanged(zaklucenie);
@@ -78,6 +69,5 @@ void Regulation::read()
 void Regulation::setWyjscieZadane(double val){
     if(val != wyjscieZadane){
         wyjscieZadane = val;
-        //emit valueWyjscieZadaneChanged(wyjscieZadane);
     }
 }

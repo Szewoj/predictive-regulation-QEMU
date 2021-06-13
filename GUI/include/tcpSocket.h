@@ -11,10 +11,10 @@ class tcpSocket : public QObject {
 public:
     explicit tcpSocket(QObject *parent = 0);
 
-    void doConnect();
-    void doConnect(QString addr);
-    void sendParameters(int new_N, int new_Nu, double new_lambda);
-    void sendYoutput();
+    void doConnect(QString addr, int port);
+    void sendParameters(double new_Y, int new_N, int new_Nu, double new_lambda);
+    void sendYoutput(double new_Y);
+    bool getCon();
 signals:
 
 public slots:
@@ -25,6 +25,8 @@ public slots:
 
 private:
     QTcpSocket *socket;
+    QString address;
+    bool con = true;
 
 };
 

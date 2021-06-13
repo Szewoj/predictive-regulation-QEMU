@@ -1,6 +1,4 @@
 #include "include/regulacja.h"
-#include "include/chart.h"
-#include "include/basicChart.h"
 #include "include/singleLineChart.h"
 #include "include/doubleLineChart.h"
 #include <QApplication>
