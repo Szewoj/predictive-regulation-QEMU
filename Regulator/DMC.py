@@ -6,8 +6,8 @@ class DMC:
     
     U_MIN = 0.0
     U_MAX = 100.0
-    D = 150
-    Dz = 40
+    D = int(150)
+    Dz = int(40)
 
     def __init__(self):
         self._mutex = Lock()
@@ -15,9 +15,14 @@ class DMC:
         self._deltaUp = 0
         self._deltaZp = 0
 
+        self._Uk_1 = 0.0
+        self._Zk_1 = 0.0
+
         self._ke = 0
         self._Ku = 0
         self._Kz = 0
+
+        self._yzad = 25.0
 
     def init_regulator(self, N, Nu, lmbd):
         M = np.zeros((N,Nu))
@@ -68,6 +73,36 @@ class DMC:
             self._Kz = Kz
         finally:
             self._mutex.release()
+
+    def calculate_U(self,y, z):
+        self._mutex.acquire()
+        try:
+
+            deltaZ = z - self._Zk_1
+            self._deltaZp = np.insert(self._deltaZp, 0, deltaZ, axis=0)[0:DMC.Dz,:]
+
+            self._Zk_1 = z
+
+            deltaU = (self._ke * (self._yzad - y) - self._Ku @ self._deltaUp - self._Kz @ self._deltaZp)[0]
+
+            u = self._Uk_1 + deltaU
+
+            if u > DMC.U_MAX:
+                u  = DMC.U_MAX
+                deltaU = DMC.U_MAX - self._Uk_1
+            elif u < DMC.U_MIN:
+                u = DMC.U_MIN
+                deltaU = DMC.U_MIN - self._Uk_1
+
+            self._deltaUp = np.insert(self._deltaUp, 0, deltaU, axis=0)[0:(DMC.D-1),:]
+
+            self._Uk_1 = u
+
+        finally:
+            self._mutex.release()
+
+        return u
+
 
 
 
