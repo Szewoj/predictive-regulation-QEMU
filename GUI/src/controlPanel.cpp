@@ -115,7 +115,7 @@ controlPanel::controlPanel(QWidget *parent)
     vBoxLeft = new QVBoxLayout;
 
 
-    setWindowTitle("Regulacja predykcyjan");
+    setWindowTitle("Regulacja predykcyjna");
     QInputDialog addr;
     QString addrs = addr.getText(nullptr, "Ustaw polaczenie","Podaj adres ip:",QLineEdit::Normal, "192.168.1.29:65433", &okay);
     if(!okay)
@@ -138,7 +138,10 @@ controlPanel::controlPanel(QWidget *parent)
     }
     symProces = new QProcess(this);
     if(okay){
-        symProces->start("./Simulation");
+        QStringList arguments;
+        QString portstr = QString::number(adres[1].toInt() + 1);
+        arguments << adres[0] << portstr ;
+        symProces->start("./Simulation", arguments);
         if( !symProces->waitForStarted()){
             qDebug()<<"Error during simulation Process";
             okay = false;
@@ -216,7 +219,7 @@ bool controlPanel::getStatus()
 
 void controlPanel::closeEvent (QCloseEvent *event)
 {
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Regulacja predykcyjan",
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Regulacja predykcyjna",
                                                                 tr("Are you sure?\n"),
                                                                 QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
                                                                 QMessageBox::Yes);
