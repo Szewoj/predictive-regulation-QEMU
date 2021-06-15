@@ -103,6 +103,13 @@ class DMC:
 
         return u
 
+    def set_yzad(self, yzad):
+        self._mutex.acquire()
+        try:
+            self._yzad = yzad
+        finally:
+            self._mutex.release()
+
 
 
 
