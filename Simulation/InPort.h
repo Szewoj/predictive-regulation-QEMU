@@ -12,6 +12,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define CODE_ACK 1
+#define CODE_ERR 2
+#define CODE_GET 3
+#define CODE_GETALL 4
+#define CODE_SET 5
+#define CODE_SETALL 6
+
+
 class InPort {
 public:
   std::atomic<double> y_;

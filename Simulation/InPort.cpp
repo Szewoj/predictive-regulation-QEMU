@@ -33,23 +33,55 @@ void InPort::operator()(int argc, char *argv[]) {
   }
   
   std::cout << "Connected to Regulator";
-  bzero(buffer, 256);
   //---
 
   //--- PROCESS MESSAGES
   for(;;){
-    
-    /* czytanie i pisanie:
-    fgets(buffer, 255, stdin);
-    n = write(sockfd, buffer, strlen(buffer));
-    if (n < 0)
-      error("ERROR writing to socket");
     bzero(buffer, 256);
-    n = read(sockfd, buffer, 255);
-    if (n < 0)
-      error("ERROR reading from socket");
-    printf("%s\n", buffer);
-     */
+    n = read(sockfd_, buffer, 255);
+    if (n < 0){
+      std::cerr << "ERROR reading from socket!" << std::endl;
+    }
+
+    if (n == 0)
+      continue;
+
+    uint8_t action = buffer[0];
+
+    switch(action){
+      case CODE_ACK:
+        continue;
+        break;
+
+      case CODE_ERR:
+        std::cerr << "ERROR Received communication error code!" << std::endl;
+        return;
+        break;
+
+      case CODE_GETALL:
+        bzero(buffer, 256);
+        buffer[0] = CODE_ACK;
+        buffer[1] = 16;
+        memcpy(buffer+2, &y_, sizeof(double));
+        memcpy(buffer+2+sizeof(double), &z_, sizeof(double));
+        n = write(sockfd_, buffer, 18);
+        if (n < 0)
+          std::cerr << "ERROR writing to socket!" << std::endl;
+        break;
+
+      case CODE_SET:
+        if(buffer[1] == 8){
+          double tmp;
+          memcpy(&tmp, buffer+2, sizeof(double));
+          u_ = tmp;
+        }
+        break;
+
+      default:
+        break;
+
+    }
+
   }
   //---
 }
