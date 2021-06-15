@@ -18,7 +18,7 @@ void controlPanel::initCharts(){
     UchartView->setRenderHint(QPainter::Antialiasing);
 
     ZChart = new singleLineChart();
-    ZChart->setTitle("Zakłucenie");
+    ZChart->setTitle("Zakłócenie");
     ZChart->legend()->hide();
     ZChart->setAnimationOptions(QChart::AllAnimations);
     ZchartView = new QChartView(ZChart,this);

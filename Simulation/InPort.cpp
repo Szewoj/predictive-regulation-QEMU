@@ -73,6 +73,7 @@ void InPort::operator()(int argc, char *argv[]) {
         if(buffer[1] == 8){
           double tmp;
           memcpy(&tmp, buffer+2, sizeof(double));
+          std::cerr << "tmp = "<< tmp << std::endl;
           u_ = tmp;
         }
         break;

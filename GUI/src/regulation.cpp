@@ -26,7 +26,7 @@ Regulation::Regulation():
     if(pthread_rwlock_init(&shm->rw, &shm->attr) == -1)
         qDebug()<<"rwlock_init";
 
-    wyjscieZadane = 0;
+    wyjscieZadane = 25;
 }
 
 Regulation::~Regulation(){

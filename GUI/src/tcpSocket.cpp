@@ -70,7 +70,7 @@ void tcpSocket::sendParameters(double new_Y, int new_N, int new_Nu, double new_l
     u_int8_t p2 = new_Nu;
     double p3 = new_lambda;
 
-    u_int8_t length = 4 * sizeof(u_int8_t) + 2 * sizeof(double);
+    u_int8_t length = 2 * sizeof(u_int8_t) + 2 * sizeof(double); //18
 
     char *byte1 = (char*)&SETALL;
     char *byte2 = (char*)&length;
@@ -94,7 +94,7 @@ void tcpSocket::sendYoutput(double new_Y){
     QByteArray arr;
     u_int8_t SET = 5;
     double y = new_Y;
-    u_int8_t length =  sizeof(double);
+    u_int8_t length =  sizeof(double);//8
 
     char *byte1 = (char*)&SET;
     char *byte2 = (char*)&length;
