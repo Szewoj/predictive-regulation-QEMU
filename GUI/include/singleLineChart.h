@@ -3,7 +3,6 @@
 
 #include <QtCharts/QChart>
 #include <QtCore/QTimer>
-#include "include/regulation.h"
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;

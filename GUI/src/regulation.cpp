@@ -27,9 +27,9 @@ Regulation::Regulation():
 
     // Wartosci testowe
     //double t1 = 3.82;
-    double t1 = 6;
-    double t2 = -4.52;
-    double t3 = 1.23;
+    /*double t1 = 50.5;
+    double t2 = 15;
+    double t3 = 99;
     char *byte1 = (char*)&t1;
     char *byte2 = (char*)&t2;
     char *byte3 = (char*)&t3;
@@ -41,7 +41,7 @@ Regulation::Regulation():
     memcpy(&shm->U,byte3, sizeof(double));
 
     pthread_rwlock_unlock(&shm->rw);
-
+    */
     wyjscieZadane = 4;
 }
 

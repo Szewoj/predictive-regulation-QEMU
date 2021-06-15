@@ -46,6 +46,7 @@ void tcpSocket::connected()
 void tcpSocket::disconnected()
 {
     qDebug() << "Disconnected";
+    emit(stateDisconected());
 }
 
 void tcpSocket::readyRead()
@@ -108,5 +109,5 @@ void tcpSocket::sendYoutput(double new_Y){
 
 bool tcpSocket::getCon()
 {
-    return con;
+    return !(socket->state() == QAbstractSocket::UnconnectedState);
 }

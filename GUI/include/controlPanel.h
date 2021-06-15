@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "include/regulacja.h"
+
 #include "include/singleLineChart.h"
 #include "include/doubleLineChart.h"
 #include "include/pshm_stc.h"
@@ -21,6 +21,7 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QGridLayout>
+#include <QProcess>
 #include<QDebug>
 #include <pthread.h>
 #include <QMessageBox>
@@ -44,13 +45,16 @@ class controlPanel : public QMainWindow
 public:
     controlPanel(QWidget *parent = nullptr);
     ~controlPanel();
+    bool getStatus();
 
 private:
     QTimer mainTimer;
     QWidget *centralWidget;
     Regulation reg;
     bool okay;
+    QString ErrorMessage;
     tcpSocket *socket;
+    QProcess *symProces;
 
     QGridLayout *mainGridLayout;
     QVBoxLayout *vBoxRight;

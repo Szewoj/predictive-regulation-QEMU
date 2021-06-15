@@ -15,7 +15,9 @@ public:
     void sendParameters(double new_Y, int new_N, int new_Nu, double new_lambda);
     void sendYoutput(double new_Y);
     bool getCon();
+
 signals:
+    void stateDisconected();
 
 public slots:
     void connected();

@@ -1,4 +1,3 @@
-#include "include/regulacja.h"
 #include "include/singleLineChart.h"
 #include "include/doubleLineChart.h"
 #include "include/pshm_stc.h"
@@ -31,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include "include/control.h"
+
 #include "include/controlPanel.h"
 
 
@@ -39,5 +38,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     controlPanel pc;
+
     return app.exec();
 }

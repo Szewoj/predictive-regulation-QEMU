@@ -49,7 +49,7 @@ doubleLineChart::doubleLineChart(QGraphicsItem *parent, Qt::WindowFlags wFlags):
     m_axisX->setTickType(QValueAxis::TicksFixed);
     m_axisX->setRange(0, 60);
     m_axisX->setTickInterval(5);
-    m_axisY->setRange(-10, 10);
+    m_axisY->setRange(0, 110);
 
 
 }

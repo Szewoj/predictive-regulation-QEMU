@@ -12,21 +12,17 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/control.cpp \
     src/controlPanel.cpp \
     src/doubleLineChart.cpp \
     src/main.cpp \
-    src/regulacja.cpp \
     src/regulation.cpp \
     src/singleLineChart.cpp \
     src/tcpSocket.cpp
 
 HEADERS += \
-    include/control.h \
     include/controlPanel.h \
     include/doubleLineChart.h \
     include/pshm_stc.h \
-    include/regulacja.h \
     include/regulation.h \
     include/singleLineChart.h \
     include/tcpSocket.h

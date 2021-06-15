@@ -32,11 +32,12 @@ void controlPanel::initCharts(){
 }
 void controlPanel::initRestOfGui(){
     //aditional layouts
-    hBoxLayout = new QHBoxLayout(this);
-    hBoxLayout1 = new QHBoxLayout(this);
-    hBoxLayout2 = new QHBoxLayout(this);
-    hBoxLayout3 = new QHBoxLayout(this);
-    hBoxLayout4 = new QHBoxLayout(this);
+    firstForm = new QFormLayout;
+    hBoxLayout = new QHBoxLayout;
+    hBoxLayout1 = new QHBoxLayout;
+    hBoxLayout2 = new QHBoxLayout;
+    hBoxLayout3 = new QHBoxLayout;
+    hBoxLayout4 = new QHBoxLayout;
 
     //labels
     YLabel = new QLabel;
@@ -57,12 +58,24 @@ void controlPanel::initRestOfGui(){
 
     //spinboxes
     Ydsb = new QDoubleSpinBox(this);
+    Ydsb->setRange(0,110);
+    Ydsb->setSingleStep(5);
+    Ydsb->setValue(5);
+
     Nsb = new QSpinBox(this);
+    Nsb->setRange(10, 150);
+    Nsb->setSingleStep(1);
+    Nsb->setValue(100);
+
     Nusb = new QSpinBox(this);
+    Nusb->setRange(1,50);
+    Nusb->setSingleStep(1);
+    Nusb->setValue(15);
+
     Lambdadsb = new QDoubleSpinBox(this);
-    Ydsb->setRange(-5,5);
-    Ydsb->setSingleStep(0.1);
-    Lambdadsb->setSingleStep(0.01);
+    Lambdadsb->setRange(1,1000);
+    Lambdadsb->setSingleStep(0.5);
+    Lambdadsb->setValue(8);
     Lambdadsb->setFixedSize(100,25);
 
     //layouts
@@ -96,21 +109,44 @@ void controlPanel::initRestOfGui(){
 }
 controlPanel::controlPanel(QWidget *parent)
 {
-    vBoxRight = new QVBoxLayout(this);
-    vBoxLeft = new QVBoxLayout(this);
-    firstForm = new QFormLayout(this);
     centralWidget = new QWidget(this);
-    mainGridLayout = new QGridLayout(this);
+    mainGridLayout = new QGridLayout(centralWidget);
+    vBoxRight = new QVBoxLayout;
+    vBoxLeft = new QVBoxLayout;
+
+
 
     QInputDialog addr;
     QString addrs = addr.getText(nullptr, "Ustaw polaczenie","Podaj adres ip:",QLineEdit::Normal, "192.168.1.29:65433", &okay);
+    if(!okay)
+    {
+        ErrorMessage = "Application needs address IP and port!";
+    }
+    QStringList adres;
+    socket = new tcpSocket;
     if(okay)
     {
         QRegExp regExp("(\\:)");
-        QStringList adres = addrs.split(regExp);
-        socket = new tcpSocket;
+        adres = addrs.split(regExp);
         socket->doConnect(adres[0], adres[1].toInt());
+        if(!socket->getCon()){
+            qDebug()<< "No connection";
+            okay = false;
+            ErrorMessage = "Connection Error";
+        }
+
     }
+    symProces = new QProcess(this);
+    if(okay){
+        symProces->start("./Simulation");
+        if( !symProces->waitForStarted()){
+            qDebug()<<"Error during simulation Process";
+            okay = false;
+            ErrorMessage = "Simulation Process Error";
+        }
+
+    }
+
 
     initCharts();
     initRestOfGui();
@@ -125,14 +161,30 @@ controlPanel::controlPanel(QWidget *parent)
 
     QObject::connect(Ybutton, &QPushButton::clicked, [=]{
 
+        qDebug()<<socket->getCon();
         socket->sendYoutput(Ydsb->value());
         reg.setWyjscieZadane(Ydsb->value());
 
     });
     QObject::connect(ParamButton, &QPushButton::clicked, [=]{
-
         socket->sendParameters(Ydsb->value(), Nsb->value(), Nusb->value(), Lambdadsb->value());
         reg.setWyjscieZadane(Ydsb->value());
+    });
+    QObject::connect(symProces, &QProcess::stateChanged, [=]{
+        if(symProces->state() == QProcess::NotRunning)
+        {
+            mainTimer.stop();
+            disconnect(Ybutton,nullptr,nullptr,nullptr);
+            disconnect(ParamButton,nullptr,nullptr,nullptr);
+            QMessageBox::information(this, "Information", "The simulation process has stopped", QMessageBox::Yes);
+
+        }
+    });
+    QObject::connect(socket, &tcpSocket::stateDisconected, [=]{
+            mainTimer.stop();
+            disconnect(Ybutton,nullptr,nullptr,nullptr);
+            disconnect(ParamButton,nullptr,nullptr,nullptr);
+            QMessageBox::information(this, "Information", "Connection losted", QMessageBox::Yes);
     });
 
     mainTimer.setInterval(500);
@@ -141,83 +193,25 @@ controlPanel::controlPanel(QWidget *parent)
     setCentralWidget(centralWidget);
     resize(1200, 700);
     setMinimumSize(1200, 700);
-    if(okay)
-        show();
+    show();
 
+    if(!okay){
+        mainTimer.stop();
+        disconnect(Ybutton,nullptr,nullptr,nullptr);
+        disconnect(ParamButton,nullptr,nullptr,nullptr);
+        QMessageBox::critical(this, "Error", ErrorMessage, QMessageBox::Yes);
+    }
 }
 
 controlPanel::~controlPanel()
 {
     delete centralWidget;
-
     delete socket;
-    /*
-    delete Ydsb;
-    delete YLabel;
+}
 
-    delete firstForm;*/
-    //delete hBoxLayout;
-    /*
-    delete hBoxLayout1;
-    delete hBoxLayout2;
-    delete hBoxLayout3;
-    delete hBoxLayout4;*/
-/*
-    delete Ydsb;
-    delete Nsb;
-    delete Nusb;
-    delete Lambdadsb;
-
-    delete YLabel;
-    delete ParamLabel;
-    delete NLabel;
-    delete NuLabel;
-    delete LambdaLabel;
-
-    delete Ybutton;
-    delete ParamButton;
-
-    delete YchartView;
-    delete UchartView;
-    delete ZchartView;
-
-    delete YChart;
-    delete UChart;
-    delete ZChart;*/
-    /*
-    delete mainGridLayout;
-    delete vBoxRight;
-    delete vBoxLeft;
-    delete firstForm;
-
-    delete YChart;
-    delete UChart;
-    delete ZChart;
-
-    delete YchartView;
-    delete UchartView;
-    delete ZchartView;
-
-    delete Ybutton;
-    delete ParamButton;
-
-    delete YLabel;
-    delete ParamLabel;
-    delete NLabel;
-    delete NuLabel;
-    delete LambdaLabel;
-
-    delete Ydsb;
-    delete Nsb;
-    delete Nusb;
-    delete Lambdadsb;
-
-    delete hBoxLayout;
-    delete hBoxLayout1;
-    delete hBoxLayout2;
-    delete hBoxLayout3;
-    delete hBoxLayout4;*/
-
+bool controlPanel::getStatus()
+{
+    return okay;
 }
 
 void controlPanel::closeEvent (QCloseEvent *event)
@@ -229,6 +223,7 @@ void controlPanel::closeEvent (QCloseEvent *event)
     if (resBtn != QMessageBox::Yes) {
         event->ignore();
     } else {
+        symProces->close();
         event->accept();
     }
 }
