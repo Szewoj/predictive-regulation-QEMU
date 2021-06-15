@@ -2,7 +2,10 @@
 #define DOUBLELINECHART_H
 
 #include <QtCharts/QChart>
-#include <QtCore/QTimer>
+#include <QtCharts/QAbstractAxis>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QDebug>
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;

@@ -1,4 +1,4 @@
-#include "include/controlPanel.h"
+#include "../include/controlPanel.h"
 
 void controlPanel::initCharts(){
 
@@ -115,7 +115,7 @@ controlPanel::controlPanel(QWidget *parent)
     vBoxLeft = new QVBoxLayout;
 
 
-
+    setWindowTitle("Regulacja predykcyjan");
     QInputDialog addr;
     QString addrs = addr.getText(nullptr, "Ustaw polaczenie","Podaj adres ip:",QLineEdit::Normal, "192.168.1.29:65433", &okay);
     if(!okay)
@@ -184,7 +184,7 @@ controlPanel::controlPanel(QWidget *parent)
             mainTimer.stop();
             disconnect(Ybutton,nullptr,nullptr,nullptr);
             disconnect(ParamButton,nullptr,nullptr,nullptr);
-            QMessageBox::information(this, "Information", "Connection losted", QMessageBox::Yes);
+            QMessageBox::information(this, "Information", "Connection lost", QMessageBox::Yes);
     });
 
     mainTimer.setInterval(500);
@@ -216,7 +216,7 @@ bool controlPanel::getStatus()
 
 void controlPanel::closeEvent (QCloseEvent *event)
 {
-    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "APP_NAME",
+    QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Regulacja predykcyjan",
                                                                 tr("Are you sure?\n"),
                                                                 QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
                                                                 QMessageBox::Yes);

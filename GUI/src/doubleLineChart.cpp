@@ -1,11 +1,5 @@
-#include "include/doubleLineChart.h"
-#include <QtCharts/QAbstractAxis>
-#include <QtCharts/QSplineSeries>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QValueAxis>
-#include <QtCore/QRandomGenerator>
-#include <QtCore/QDebug>
-#include <QDebug>
+#include "../include/doubleLineChart.h"
+
 
 doubleLineChart::doubleLineChart(QGraphicsItem *parent, Qt::WindowFlags wFlags):
     QChart(QChart::ChartTypeCartesian, parent, wFlags),

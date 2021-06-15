@@ -1,5 +1,5 @@
 #include "../include/regulation.h"
-#include<QDebug>
+
 
 Regulation::Regulation():
     shmpath("/regShm")

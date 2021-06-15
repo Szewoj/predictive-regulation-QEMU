@@ -2,7 +2,8 @@
 #define REGULATION_H
 
 #include <QObject>
-#include <include/pshm_stc.h>
+#include<QDebug>
+#include "../include/pshm_stc.h"
 
 
 

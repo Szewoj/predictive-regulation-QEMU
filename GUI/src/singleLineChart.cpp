@@ -1,11 +1,5 @@
-#include "include/singleLineChart.h"
-#include <QtCharts/QAbstractAxis>
-#include <QtCharts/QSplineSeries>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QValueAxis>
-#include <QtCore/QRandomGenerator>
-#include <QtCore/QDebug>
-#include <QDebug>
+#include "../include/singleLineChart.h"
+
 
 singleLineChart::singleLineChart(QGraphicsItem *parent, Qt::WindowFlags wFlags):
     QChart(QChart::ChartTypeCartesian, parent, wFlags),

@@ -2,7 +2,10 @@
 #define SINGLELINECHART_H
 
 #include <QtCharts/QChart>
-#include <QtCore/QTimer>
+#include <QtCharts/QAbstractAxis>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
+#include <QDebug>
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QLineSeries;
@@ -25,7 +28,6 @@ public slots:
 
 
 private:
-    QTimer m_timer;
     QLineSeries *m_series;
     QStringList m_titles;
     QValueAxis *m_axisX;

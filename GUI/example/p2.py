@@ -24,7 +24,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as GuiSocket:
             print(GuiConnection)
             print(GuiAddress)
             dataACK = GuiConnection.recv(2)
-            d = struct.unpack('BB', dataACK)
+            #if len(dataACK) < 2:
+            d = struct.unpack('BB', dataACK[:2])
             while True:
                 if d[0] == 1 and d[1] ==0:
                     data = GuiConnection.recv(20)
@@ -42,5 +43,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as GuiSocket:
                     elif desc[0] == 5 and desc[1]:
                         y, = struct.unpack('d', data[2:10])
                         print("Then new output is: " + str(round(y, 2)))
-                        
+                else:
+                    break
 
