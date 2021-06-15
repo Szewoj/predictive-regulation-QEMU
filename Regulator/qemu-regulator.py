@@ -14,14 +14,15 @@ PORT2 = 65434
 def cyclic_routine(dmc, connection):
     connection.send(struct.pack("BB", 4, 0))
     data = connection.recv(20)
-    if len(data) > 2:
-        d = struct.unpack('BB', data[:2])
+    d = struct.unpack('BB', data[:2])
     if d[0] == 1 and d[1] == 16:
         y, = struct.unpack('d', data[2:10])
         z, = struct.unpack('d', data[10:18])
+    #print("y = " + str(y))
+    #print("z = " + str(z))
     u = dmc.calculate_U(y, z)
-    print(u)
-    connection.send(struct.pack("BBd", 5, 8, u))
+    print("u = " + str(u))
+    connection.send(struct.pack("BB", 5, 8) + struct.pack("d", u))
 
 def main():
     regulator = DMC()
@@ -44,7 +45,7 @@ def main():
     print(ObjConnection)
     print(ObjAddress)
 
-    rt = RepeatedTimer(0.5, cyclic_routine, regulator, ObjConnection)
+    rt = RepeatedTimer(1, cyclic_routine, regulator, ObjConnection)
 
     try:
         while True:
@@ -60,14 +61,15 @@ def main():
                             break
                         desc = struct.unpack('BB', data[:2])
 
-                        if desc[0] == 6 and desc[1] == 20:
+                        if desc[0] == 6 and desc[1] == 18:
                             y, = struct.unpack('d', data[2:10])
                             N, Nu = struct.unpack('BB', data[10:12])
                             lbda, = struct.unpack('d', data[12:20])
                             print("Then new parametrs are: " + str(round(y, 2)) + " " + str(N) + " " + str(Nu) + " " + str(round(lbda,2)))
-                            regulator.init_regulator(N, Nu, lbda)
+                            regulator.set_yzad(round(y, 2))
+                            regulator.init_regulator(N, Nu, round(lbda,2))
 
-                        elif desc[0] == 5 and desc[1]:
+                        elif desc[0] == 5 and desc[1] ==8:
                             y, = struct.unpack('d', data[2:10])
                             print("Then new output is: " + str(round(y, 2)))
                             regulator.set_yzad(y)
