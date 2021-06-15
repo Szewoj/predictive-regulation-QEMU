@@ -12,13 +12,16 @@ PORT = 65433
 PORT2 = 65434
 
 def cyclic_routine(dmc, connection):
-    # TODO get simulation values
-    y = 0.0
-    z = 0.0
+    connection.send(struct.pack("BB", 4, 0))
+    data = connection.recv(20)
+    if len(data) > 2:
+        d = struct.unpack('BB', data[:2])
+    if d[0] == 1 and d[1] == 16:
+        y, = struct.unpack('d', data[2:10])
+        z, = struct.unpack('d', data[10:18])
     u = dmc.calculate_U(y, z)
     print(u)
-    # TODO send response with u
-
+    connection.send(struct.pack("BBd", 5, 8, u))
 
 def main():
     regulator = DMC()
