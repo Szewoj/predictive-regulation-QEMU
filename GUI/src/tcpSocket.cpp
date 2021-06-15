@@ -86,7 +86,7 @@ void tcpSocket::sendParameters(double new_Y, int new_N, int new_Nu, double new_l
     arr.append(byte5,1);
     arr.append(byte6,8);
     qDebug() << "Sending parameters..."<< arr << " "<< length;
-    socket->write(arr, length);
+    socket->write(arr, 20);
 
 }
 
@@ -94,7 +94,7 @@ void tcpSocket::sendYoutput(double new_Y){
     QByteArray arr;
     u_int8_t SET = 5;
     double y = new_Y;
-    u_int8_t length = 2 * sizeof(u_int8_t) + 1 * sizeof(double);
+    u_int8_t length =  sizeof(double);
 
     char *byte1 = (char*)&SET;
     char *byte2 = (char*)&length;
@@ -103,7 +103,7 @@ void tcpSocket::sendYoutput(double new_Y){
     arr.append(byte2,1);
     arr.append(byte3,8);
     qDebug() << "Sending Y..."<< arr << " "<< length;
-    socket->write(arr, length);
+    socket->write(arr, 10);
 
 }
 
