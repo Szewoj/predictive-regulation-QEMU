@@ -137,6 +137,19 @@ Simulation/fast:
 .PHONY : Simulation/fast
 
 #=============================================================================
+# Target rules for targets named pshm_stc
+
+# Build rule for target.
+pshm_stc: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pshm_stc
+.PHONY : pshm_stc
+
+# fast build rule for target.
+pshm_stc/fast:
+	$(MAKE) -f CMakeFiles/pshm_stc.dir/build.make CMakeFiles/pshm_stc.dir/build
+.PHONY : pshm_stc/fast
+
+#=============================================================================
 # Target rules for targets named SimObject
 
 # Build rule for target.
@@ -230,6 +243,33 @@ Simulation.cpp.s:
 	$(MAKE) -f CMakeFiles/Simulation.dir/build.make CMakeFiles/Simulation.dir/Simulation.cpp.s
 .PHONY : Simulation.cpp.s
 
+pshm_stc.o: pshm_stc.cpp.o
+
+.PHONY : pshm_stc.o
+
+# target to build an object file
+pshm_stc.cpp.o:
+	$(MAKE) -f CMakeFiles/pshm_stc.dir/build.make CMakeFiles/pshm_stc.dir/pshm_stc.cpp.o
+.PHONY : pshm_stc.cpp.o
+
+pshm_stc.i: pshm_stc.cpp.i
+
+.PHONY : pshm_stc.i
+
+# target to preprocess a source file
+pshm_stc.cpp.i:
+	$(MAKE) -f CMakeFiles/pshm_stc.dir/build.make CMakeFiles/pshm_stc.dir/pshm_stc.cpp.i
+.PHONY : pshm_stc.cpp.i
+
+pshm_stc.s: pshm_stc.cpp.s
+
+.PHONY : pshm_stc.s
+
+# target to generate assembly for a file
+pshm_stc.cpp.s:
+	$(MAKE) -f CMakeFiles/pshm_stc.dir/build.make CMakeFiles/pshm_stc.dir/pshm_stc.cpp.s
+.PHONY : pshm_stc.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -240,6 +280,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... InPort"
 	@echo "... Simulation"
+	@echo "... pshm_stc"
 	@echo "... SimObject"
 	@echo "... InPort.o"
 	@echo "... InPort.i"
@@ -250,6 +291,9 @@ help:
 	@echo "... Simulation.o"
 	@echo "... Simulation.i"
 	@echo "... Simulation.s"
+	@echo "... pshm_stc.o"
+	@echo "... pshm_stc.i"
+	@echo "... pshm_stc.s"
 .PHONY : help
 
 

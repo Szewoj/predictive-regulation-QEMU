@@ -9,11 +9,15 @@
 
 #include "InPort.h"
 #include "SimObject.h"
+#include "pshm_stc.h"
 
 int main(int, char **) {
 
   //--- INITIALIZE SHARED MEMORY
-  // TODO
+  int fd = shm_open("/regShm", O_RDWR, S_IWUSR);
+  if (fd == -1)
+        errExit("shm_open");
+  struct shm_data *shm = (shm_data*) mmap(NULL, sizeof(struct shm_data), PROT_READ|PROT_WRITE, MAP_SHARED,fd,0);
   //---
 
   //--- INITIALIZE COMUNICATION THREAD
@@ -128,7 +132,11 @@ int main(int, char **) {
       tcpPort->y_ = y;
 
       // save variables to shm
-      // TODO
+      pthread_rwlock_wrlock(&shm->rw);
+        memcpy(&shm->Y,(char*)&y, sizeof(double));
+        memcpy(&shm->U,(char*)&u, sizeof(double));
+        memcpy(&shm->Z,(char*)&z, sizeof(double));
+      pthread_rwlock_unlock(&shm->rw);
     }
 
     if (cv::waitKey(5) == 27)
