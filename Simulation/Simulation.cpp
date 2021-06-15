@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
             << "ms.\n";
   //---
 
+  //--- MAIN SIMULATION LOOP
   for (;;) {
 
     // wait for a new frame from camera and store it into 'frame'
@@ -143,6 +144,8 @@ int main(int argc, char *argv[]) {
     if (cv::waitKey(5) == 27)
       break;
   }
+  //---
+
   // the camera will be deinitialized automatically in VideoCapture destructor
   exit(EXIT_SUCCESS);
 }

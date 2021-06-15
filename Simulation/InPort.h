@@ -25,7 +25,7 @@ public:
     (*inPortObject)(argc, argv);
   }
 
-  ~InPort(){
+  ~InPort(){ //close connection
     if(sockfd_)
       close(sockfd_);
   }
