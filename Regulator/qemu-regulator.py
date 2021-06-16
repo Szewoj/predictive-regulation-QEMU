@@ -18,10 +18,7 @@ def cyclic_routine(dmc, connection):
     if d[0] == 1 and d[1] == 16:
         y, = struct.unpack('d', data[2:10])
         z, = struct.unpack('d', data[10:18])
-    #print("y = " + str(y))
-    #print("z = " + str(z))
     u = dmc.calculate_U(y, z)
-    print("u = " + str(u))
     connection.send(struct.pack("BB", 5, 8) + struct.pack("d", u))
 
 def main():
@@ -51,7 +48,6 @@ def main():
         while True:
             with GuiConnection:
                 dataACK = GuiConnection.recv(2)
-                #if len(dataACK) < 2:
                 d = struct.unpack('BB', dataACK[:2])
                 while True:
                     if d[0] == 1 and d[1] ==0:

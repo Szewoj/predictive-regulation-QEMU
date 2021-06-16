@@ -8,7 +8,7 @@ void InPort::operator()(int argc, char *argv[]) {
 
   char buffer[256];
   if (argc < 3) {
-    std::cerr << "Error: usage " << argv[0] << " hostname port\n" << std::endl;
+    std::cerr << "Error: usage " << argv[0] << " hostname port\n";
     return;
   }
   portno = atoi(argv[2]);
@@ -19,7 +19,7 @@ void InPort::operator()(int argc, char *argv[]) {
   }
   server = gethostbyname(argv[1]);
   if (server == NULL) {
-    std::cerr << "ERROR, no such host\n" << std::endl;
+    std::cerr << "ERROR, no such host\n";
     return;
   }
   bzero((char *)&serv_addr, sizeof(serv_addr));
@@ -73,7 +73,6 @@ void InPort::operator()(int argc, char *argv[]) {
         if(buffer[1] == 8){
           double tmp;
           memcpy(&tmp, buffer+2, sizeof(double));
-          std::cerr << "tmp = "<< tmp << std::endl;
           u_ = tmp;
         }
         break;
