@@ -123,6 +123,7 @@ controlPanel::controlPanel(QWidget *parent)
         ErrorMessage = "Application needs address IP and port!";
     }
     QStringList adres;
+    //establishing a connection
     socket = new tcpSocket;
     if(okay)
     {
@@ -136,6 +137,7 @@ controlPanel::controlPanel(QWidget *parent)
         }
 
     }
+    //running process
     symProces = new QProcess(this);
     if(okay){
         QStringList arguments;
@@ -157,11 +159,14 @@ controlPanel::controlPanel(QWidget *parent)
     mainGridLayout->addLayout(vBoxRight,0,1);
     centralWidget->setLayout(mainGridLayout);
 
+
+    //connecting timer to reading operation from shm and read to charts
     QObject::connect(&mainTimer, &QTimer::timeout, &reg, &Regulation::read);
     QObject::connect(&reg, &Regulation::valueWyjscieChanged, YChart, &doubleLineChart::appendSeries);
     QObject::connect(&reg, &Regulation::valueSterowanieChanged, UChart, &singleLineChart::appendSeries);
     QObject::connect(&reg, &Regulation::valueZaklucenieChanged, ZChart, &singleLineChart::appendSeries);
 
+    //connecting buttons to functions
     QObject::connect(Ybutton, &QPushButton::clicked, [=]{
 
         qDebug()<<socket->getCon();
@@ -173,6 +178,8 @@ controlPanel::controlPanel(QWidget *parent)
         socket->sendParameters(Ydsb->value(), Nsb->value(), Nusb->value(), Lambdadsb->value());
         reg.setWyjscieZadane(Ydsb->value());
     });
+
+    //reacting to state change of process
     QObject::connect(symProces, &QProcess::stateChanged, [=]{
         if(symProces->state() == QProcess::NotRunning)
         {
@@ -183,6 +190,7 @@ controlPanel::controlPanel(QWidget *parent)
 
         }
     });
+    //reacting to state change of connection
     QObject::connect(socket, &tcpSocket::stateDisconected, [=]{
             mainTimer.stop();
             disconnect(Ybutton,nullptr,nullptr,nullptr);
@@ -190,6 +198,7 @@ controlPanel::controlPanel(QWidget *parent)
             QMessageBox::information(this, "Information", "Connection lost", QMessageBox::Yes);
     });
 
+    //setting inverval of timer and starting
     mainTimer.setInterval(500);
     mainTimer.start();
 
@@ -198,6 +207,7 @@ controlPanel::controlPanel(QWidget *parent)
     setMinimumSize(1200, 700);
     show();
 
+    //checking if everything is all right after all operation if not stop and show error
     if(!okay){
         mainTimer.stop();
         disconnect(Ybutton,nullptr,nullptr,nullptr);
